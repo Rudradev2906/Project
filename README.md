@@ -1,29 +1,53 @@
-WHAT: This project aims to implement a Prune-Quantize-Knowledge Distill (PQK) optimization pipeline on a fine-tuned LLM, and compare it with a standard fine-tuned deployment. The goal is to demonstrate that applying these optimization techniques after fine-tuning but before deployment can lead to significant reductions in model size, inference time, and carbon footprint, without major loss in accuracy. This work explores how such an optimization-first mindset, even when applied at the smaller NLP scale (e.g., BERT instead of billion-parameter LLMs), can inform greener and more efficient AI practices from the ground up.
+WHAT: This project aims to implement a Prune-Quantize-Knowledge Distill (PQK) optimization pipeline on a fine-tuned LLM, and compare it with a standard fine-tuned deployment. The goal is to demonstrate that applying these optimization techniques during/after fine-tuning but before deployment can lead to significant reductions in model size, inference time, and carbon footprint, without major loss in accuracy. This work explores how such an optimization-first mindset, even when applied at the smaller NLP scale (e.g., BERT instead of billion-parameter LLMs), can inform greener and more efficient AI practices from the ground up.
 
 
 WHY: While large language models (LLMs) are becoming central to NLP applications, their resource demands have sparked concern over their environmental and economic sustainability. Much of the current optimization work (quantization, pruning, distillation) happens after deployment or only targets massive-scale models. However, recent research has shown that efficiency can and should be introduced earlier in the pipeline, during or just after fine-tuning:
 
-Movement Pruning by Sanh et al. (2020) shows that pruning during fine-tuning preserves task performance while introducing high sparsity.
+• Movement Pruning by Sanh et al. (2020) shows that pruning during fine-tuning preserves task performance while introducing high sparsity.
 
-LEAP (2021) introduces learnable, dynamic pruning during fine-tuning for transformers.
+• Compressing BERT (2020) demonstrates that lightweight pruning before downstream transfer can retain accuracy.
 
-Compressing BERT (2020) demonstrates that lightweight pruning before downstream transfer can retain accuracy.
-
-Practical frameworks like AE-BERT and Neural Magic’s Compound Sparsification show that optimization before deployment enables edge-device readiness with minimal trade-offs.
+• Practical frameworks like AE-BERT and Neural Magic’s Compound Sparsification show that optimization before deployment enables edge-device readiness with minimal trade-offs.
 
 This project adopts this early-optimization perspective to show that even small-scale NLP models can benefit from PQK techniques — encouraging a bottom-up shift toward sustainable AI design.
 
 
-HOW: Fine-tune the bert-base-uncased model on a standard text classification task (e.g., IMDb).
+HOW (MVP): The below process will be followed for the minimum viable product and will be later updated as the project progresses.
 
-Apply structured/unstructured pruning techniques after fine-tuning.
+• Preprocess the dataset (IMDb) and clean text by removing special characters and extra spaces.
 
-Follow up with quantization and lightweight knowledge distillation to reduce model complexity further.
+• Tokenize the input using bert-base-uncased tokenizer with padding and truncation (max_length=512).
 
-Evaluate and compare the baseline fine-tuned model vs. the PQK-optimized model on: Accuracy, Inference time, Model size, Carbon footprint (using CodeCarbon).
+• Convert the tokenized outputs and labels into PyTorch tensors and wrap them in DataLoaders.
+
+• Fine-tune the bert-base-uncased model on the training data for a few epochs using standard training loop (AdamW optimizer and linear scheduler).
+
+• Evaluate and save the fine-tuned baseline model for future comparison.
+
+Apply post-fine-tuning pruning:
+
+• Use PyTorch's torch.nn.utils.prune module or similar to prune weights.
+
+• Experiment with unstructured pruning (e.g., global weight pruning by magnitude).
+
+• Optionally try structured pruning (e.g., removing entire attention heads or feed-forward neurons).
+
+• Re-evaluate the pruned model to ensure minimal drop in accuracy.
+
+• Save the pruned version separately for deployment.
+
+• Build and deploy containers of both models for training and inference on Vertex AI.
+
+• Gather carbon data from CodeCarbon and Google Carbon tool for comparative study.
 
 
-OUTCOME OF THE PROJECT: 
+OUTCOME OF THE PROJECT:
+
+• Compare both models based on accuracy, inference time, model size, and energy consumption
+
+• Show that optimized models can achieve similar accuracy with reduced latency, smaller footprint, and lower emissions.
+
+• Conclude with evidence supporting the adoption of optimization-first approaches for more sustainable and efficient NLP pipelines.
 
 | WEEK NO.                                                                             | WHAT                                                                                                                                                                                                                                                                                                                                                                      | TASKS                                      | SUB-TASKS                                                                                                              | COMMENTS     | ESTIMATE     |
 |:-------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------|:-------------|:-------------|
