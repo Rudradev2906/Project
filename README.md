@@ -1,6 +1,28 @@
-WHAT:
-WHY: This project focuses on an optimization-first mindset of LLM refinement by demonstrating that performance, efficiency and sustainability can be addressed pre-deployment and this can help address the LLM-Cloud sustainability issue even at a small-scale and hopefully can be adopted at an industrial scale.
-HOW: 
+WHAT: This project aims to implement a Prune-Quantize-Knowledge Distill (PQK) optimization pipeline on a fine-tuned LLM, and compare it with a standard fine-tuned deployment. The goal is to demonstrate that applying these optimization techniques after fine-tuning but before deployment can lead to significant reductions in model size, inference time, and carbon footprint, without major loss in accuracy. This work explores how such an optimization-first mindset, even when applied at the smaller NLP scale (e.g., BERT instead of billion-parameter LLMs), can inform greener and more efficient AI practices from the ground up.
+
+
+WHY: While large language models (LLMs) are becoming central to NLP applications, their resource demands have sparked concern over their environmental and economic sustainability. Much of the current optimization work (quantization, pruning, distillation) happens after deployment or only targets massive-scale models. However, recent research has shown that efficiency can and should be introduced earlier in the pipeline, during or just after fine-tuning:
+
+Movement Pruning by Sanh et al. (2020) shows that pruning during fine-tuning preserves task performance while introducing high sparsity.
+
+LEAP (2021) introduces learnable, dynamic pruning during fine-tuning for transformers.
+
+Compressing BERT (2020) demonstrates that lightweight pruning before downstream transfer can retain accuracy.
+
+Practical frameworks like AE-BERT and Neural Magic’s Compound Sparsification show that optimization before deployment enables edge-device readiness with minimal trade-offs.
+
+This project adopts this early-optimization perspective to show that even small-scale NLP models can benefit from PQK techniques — encouraging a bottom-up shift toward sustainable AI design.
+
+
+HOW: Fine-tune the bert-base-uncased model on a standard text classification task (e.g., IMDb).
+
+Apply structured/unstructured pruning techniques after fine-tuning.
+
+Follow up with quantization and lightweight knowledge distillation to reduce model complexity further.
+
+Evaluate and compare the baseline fine-tuned model vs. the PQK-optimized model on: Accuracy, Inference time, Model size, Carbon footprint (using CodeCarbon).
+
+
 OUTCOME OF THE PROJECT: 
 
 | WEEK NO.                                                                             | WHAT                                                                                                                                                                                                                                                                                                                                                                      | TASKS                                      | SUB-TASKS                                                                                                              | COMMENTS     | ESTIMATE     |
