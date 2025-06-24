@@ -3,51 +3,51 @@ WHAT: This project aims to implement a Prune-Quantize-Knowledge Distill (PQK) op
 
 WHY: While large language models (LLMs) are becoming central to NLP applications, their resource demands have sparked concern over their environmental and economic sustainability. Much of the current optimization work (quantization, pruning, distillation) happens after deployment or only targets massive-scale models. However, recent research has shown that efficiency can and should be introduced earlier in the pipeline, during or just after fine-tuning:
 
-• Movement Pruning by Sanh et al. (2020) shows that pruning during fine-tuning preserves task performance while introducing high sparsity.
+  • Movement Pruning by Sanh et al. (2020) shows that pruning during fine-tuning preserves task performance while introducing high sparsity.
 
-• Compressing BERT (2020) demonstrates that lightweight pruning before downstream transfer can retain accuracy.
+  • Compressing BERT (2020) demonstrates that lightweight pruning before downstream transfer can retain accuracy.
 
-• Practical frameworks like AE-BERT and Neural Magic’s Compound Sparsification show that optimization before deployment enables edge-device readiness with minimal trade-offs.
+  • Practical frameworks like AE-BERT and Neural Magic’s Compound Sparsification show that optimization before deployment enables edge-device readiness with minimal trade-offs.
 
 This project adopts this early-optimization perspective to show that even small-scale NLP models can benefit from PQK techniques — encouraging a bottom-up shift toward sustainable AI design.
 
 
 HOW (MVP): The below process will be followed for the minimum viable product and will be later updated as the project progresses.
 
-• Preprocess the dataset (IMDb) and clean text by removing special characters and extra spaces.
+  • Preprocess the dataset (IMDb) and clean text by removing special characters and extra spaces.
 
-• Tokenize the input using bert-base-uncased tokenizer with padding and truncation (max_length=512).
+  • Tokenize the input using bert-base-uncased tokenizer with padding and truncation (max_length=512).
 
-• Convert the tokenized outputs and labels into PyTorch tensors and wrap them in DataLoaders.
+  • Convert the tokenized outputs and labels into PyTorch tensors and wrap them in DataLoaders.
 
-• Fine-tune the bert-base-uncased model on the training data for a few epochs using standard training loop (AdamW optimizer and linear scheduler).
+  • Fine-tune the bert-base-uncased model on the training data for a few epochs using standard training loop (AdamW optimizer and linear scheduler).
 
-• Evaluate and save the fine-tuned baseline model for future comparison.
+  • Evaluate and save the fine-tuned baseline model for future comparison.
 
 Apply post-fine-tuning pruning:
 
-• Use PyTorch's torch.nn.utils.prune module or similar to prune weights.
+  • Use PyTorch's torch.nn.utils.prune module or similar to prune weights.
 
-• Experiment with unstructured pruning (e.g., global weight pruning by magnitude).
+  • Experiment with unstructured pruning (e.g., global weight pruning by magnitude).
 
-• Optionally try structured pruning (e.g., removing entire attention heads or feed-forward neurons).
+  • Optionally try structured pruning (e.g., removing entire attention heads or feed-forward neurons).
 
-• Re-evaluate the pruned model to ensure minimal drop in accuracy.
+  • Re-evaluate the pruned model to ensure minimal drop in accuracy.
 
-• Save the pruned version separately for deployment.
+  • Save the pruned version separately for deployment.
 
-• Build and deploy containers of both models for training and inference on Vertex AI.
+  • Build and deploy containers of both models for training and inference on Vertex AI.
 
-• Gather carbon data from CodeCarbon and Google Carbon tool for comparative study.
+  • Gather carbon data from CodeCarbon and Google Carbon tool for comparative study.
 
 
 OUTCOME OF THE PROJECT:
 
-• Compare both models based on accuracy, inference time, model size, and energy consumption
+  • Compare both models based on accuracy, inference time, model size, and energy consumption
 
-• Show that optimized models can achieve similar accuracy with reduced latency, smaller footprint, and lower emissions.
+  • Show that optimized models can achieve similar accuracy with reduced latency, smaller footprint, and lower emissions.
 
-• Conclude with evidence supporting the adoption of optimization-first approaches for more sustainable and efficient NLP pipelines.
+  • Conclude with evidence supporting the adoption of optimization-first approaches for more sustainable and efficient NLP pipelines.
 
 | WEEK NO.                                                                             | WHAT                                                                                                                                                                                                                                                                                                                                                                      | TASKS                                      | SUB-TASKS                                                                                                              | COMMENTS     | ESTIMATE     |
 |:-------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------|:-------------|:-------------|
